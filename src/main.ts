@@ -4,9 +4,10 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const PORT = process.env.PORT || 5000;
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(5000, () =>
-    Logger.log('App successfully running on port 5000.'),
+  await app.listen(PORT, () =>
+    Logger.log(`App successfully running on port ${PORT}.`),
   );
 }
 bootstrap();

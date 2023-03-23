@@ -24,9 +24,11 @@ export class AuthService {
     return await this.userService.createUser(data);
   }
   async login(data: LoginUserDto) {
+    console.log(data)
     const user = await this.userModel
       .findOne({ username: data.username })
       .lean();
+      console.log(data, user)
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     else {
       const result = await bcrypt.compare(data.password, user.password);
