@@ -1,5 +1,4 @@
 import { UpdatePetDto, CreatePetDto } from './dto/pet.dto';
-import { IPet } from './interface/pet.interface';
 import { PetService } from './pet.service';
 
 import {
@@ -16,23 +15,23 @@ import {
 export class PetController {
   constructor(private readonly petService: PetService) {}
   @Get(':id')
-  async getPet(@Param('id') id: string): Promise<IPet> {
+  async getPet(@Param('id') id: string) {
     return await this.petService.getPet({ id });
   }
   @Get()
-  async getPets(): Promise<IPet[]> {
+  async getPets() {
     return await this.petService.getPets();
   }
   @Delete(':id')
-  async deletePet(@Param('id') id: string): Promise<IPet> {
+  async deletePet(@Param('id') id: string) {
     return await this.petService.deletePet({ id });
   }
   @Patch()
-  async updatePet(@Body() data: UpdatePetDto): Promise<IPet> {
+  async updatePet(@Body() data: UpdatePetDto) {
     return await this.petService.updatePet(data);
   }
   @Post()
-  async createPet(@Body() data: CreatePetDto): Promise<IPet> {
+  async createPet(@Body() data: CreatePetDto) {
     return await this.petService.createPet(data);
   }
 }

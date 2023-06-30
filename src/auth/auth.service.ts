@@ -1,15 +1,15 @@
 import { UserService } from './../user/user.service';
-import { IUser } from './../user/interface/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto, LoginUserDto } from './../user/dto/user.dto';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel('User') private userModel: Model<IUser>,
+    @InjectModel('User') private userModel: Model<User>,
     private readonly userService: UserService,
   ) {}
   async signup(data: CreateUserDto) {
@@ -24,11 +24,11 @@ export class AuthService {
     return await this.userService.createUser(data);
   }
   async login(data: LoginUserDto) {
-    console.log(data)
+    console.log(data);
     const user = await this.userModel
       .findOne({ username: data.username })
       .lean();
-      console.log(data, user)
+    console.log(data, user);
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     else {
       const result = await bcrypt.compare(data.password, user.password);

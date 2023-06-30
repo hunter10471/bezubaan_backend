@@ -1,4 +1,3 @@
-import { IPet } from './interface/pet.interface';
 import {
   CreatePetDto,
   UpdatePetDto,
@@ -9,15 +8,16 @@ import {
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Pet } from './entities/pet.entity';
 
 @Injectable()
 export class PetService {
-  constructor(@InjectModel('Pet') private petModel: Model<IPet>) {}
-  async createPet(data: CreatePetDto): Promise<IPet> {
+  constructor(@InjectModel('Pet') private petModel: Model<Pet>) {}
+  async createPet(data: CreatePetDto): Promise<Pet> {
     const newPet = new this.petModel(data);
     return await newPet.save();
   }
-  async updatePet(data: UpdatePetDto): Promise<IPet> {
+  async updatePet(data: UpdatePetDto): Promise<Pet> {
     const existingPet = await this.petModel.findOneAndUpdate(
       { id: data.id },
       data,
@@ -32,7 +32,7 @@ export class PetService {
       );
     return existingPet;
   }
-  async getPet(data: GetPetDto): Promise<IPet> {
+  async getPet(data: GetPetDto): Promise<Pet> {
     const pet = await this.petModel.findOne({ id: data.id });
     if (!pet)
       throw new HttpException(
@@ -41,10 +41,10 @@ export class PetService {
       );
     return pet;
   }
-  async getPets(): Promise<IPet[]> {
+  async getPets(): Promise<Pet[]> {
     return await this.petModel.find();
   }
-  async deletePet(data: DeletePetDto): Promise<IPet> {
+  async deletePet(data: DeletePetDto): Promise<Pet> {
     const deletedPet = await this.petModel.findOneAndDelete({
       id: data.id,
     });
