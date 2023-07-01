@@ -4,7 +4,7 @@ import {
   GetUserDto,
   DeleteUserDto,
 } from './dto/user.dto';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -14,13 +14,13 @@ import { User } from './entities/user.entity';
 export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  async createUser(data: CreateUserDto): Promise<User | HttpException> {
+  async createUser(data: CreateUserDto): Promise<User> {
     try {
       const existingUser = await this.userModel.findOne({
         $or: [{ username: data.username }, { email: data.email }],
       });
       if (existingUser) {
-        return new HttpException(
+        throw new HttpException(
           'User with the following email or username already exists.',
           HttpStatus.CONFLICT,
         );
@@ -30,11 +30,12 @@ export class UserService {
       const newUser = new this.userModel({ ...data, password });
       return await newUser.save();
     } catch (error) {
-      return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async updateUser(data: UpdateUserDto): Promise<User | HttpException> {
+  async updateUser(data: UpdateUserDto): Promise<User> {
     try {
       const existingUser = await this.userModel.findOneAndUpdate(
         { username: data.username },
@@ -50,11 +51,12 @@ export class UserService {
         );
       return existingUser;
     } catch (error) {
-      return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async getUser(data: GetUserDto): Promise<User | HttpException> {
+  async getUser(data: GetUserDto): Promise<User> {
     try {
       const user = await this.userModel.findOne({ username: data.username });
       if (!user)
@@ -64,23 +66,25 @@ export class UserService {
         );
       return user;
     } catch (error) {
-      return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async getUsers(): Promise<User[] | HttpException> {
+  async getUsers(): Promise<User[]> {
     try {
       const users = await this.userModel.find();
       if (users.length === 0) {
-        return new HttpException('Users not found', HttpStatus.NOT_FOUND);
+        throw new HttpException('Users not found', HttpStatus.NOT_FOUND);
       }
       return users;
     } catch (error) {
-      return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async deleteUser(data: DeleteUserDto): Promise<User | HttpException> {
+  async deleteUser(data: DeleteUserDto): Promise<User> {
     try {
       const deletedUser = await this.userModel.findOneAndDelete({
         username: data.username,
@@ -92,7 +96,8 @@ export class UserService {
         );
       return deletedUser;
     } catch (error) {
-      return new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

@@ -5,7 +5,7 @@ import {
   DeletePetDto,
 } from './dto/pet.dto';
 
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Pet } from './entities/pet.entity';
@@ -13,46 +13,87 @@ import { Pet } from './entities/pet.entity';
 @Injectable()
 export class PetService {
   constructor(@InjectModel('Pet') private petModel: Model<Pet>) {}
+
   async createPet(data: CreatePetDto): Promise<Pet> {
-    const newPet = new this.petModel(data);
-    return await newPet.save();
+    try {
+      const existingPet = await this.petModel.findOne({ name: data.name });
+      if (existingPet) {
+        throw new HttpException(
+          `Pet with name ${data.name} already exists`,
+          HttpStatus.CONFLICT,
+        );
+      }
+      const newPet = new this.petModel(data);
+      return await newPet.save();
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
   async updatePet(data: UpdatePetDto): Promise<Pet> {
-    const existingPet = await this.petModel.findOneAndUpdate(
-      { id: data.id },
-      data,
-      {
-        new: true,
-      },
-    );
-    if (!existingPet)
-      throw new HttpException(
-        `User with id ${data.id} could not be updated.`,
-        HttpStatus.NOT_FOUND,
+    try {
+      const existingPet = await this.petModel.findOneAndUpdate(
+        { id: data.id },
+        data,
+        {
+          new: true,
+        },
       );
-    return existingPet;
+      if (!existingPet)
+        throw new HttpException(
+          `User with id ${data.id} could not be updated.`,
+          HttpStatus.NOT_FOUND,
+        );
+      return existingPet;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
-  async getPet(data: GetPetDto): Promise<Pet> {
-    const pet = await this.petModel.findOne({ id: data.id });
-    if (!pet)
-      throw new HttpException(
-        'Pet with the given details not found.',
-        HttpStatus.NOT_FOUND,
-      );
-    return pet;
+
+  async getPet(id: string): Promise<Pet> {
+    try {
+      const pet = await this.petModel.findById(id);
+      if (!pet)
+        throw new HttpException(
+          'Pet with the given details not found.',
+          HttpStatus.NOT_FOUND,
+        );
+      return pet;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
   async getPets(): Promise<Pet[]> {
-    return await this.petModel.find();
+    try {
+      const pets = await this.petModel.find();
+      if (pets.length === 0) {
+        throw new HttpException('No pets found', HttpStatus.NOT_FOUND);
+      }
+      return pets;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
   async deletePet(data: DeletePetDto): Promise<Pet> {
-    const deletedPet = await this.petModel.findOneAndDelete({
-      id: data.id,
-    });
-    if (!deletedPet)
-      throw new HttpException(
-        'Pet with the given details not found.',
-        HttpStatus.NOT_FOUND,
-      );
-    return deletedPet;
+    try {
+      const deletedPet = await this.petModel.findOneAndDelete({
+        id: data.id,
+      });
+      if (!deletedPet)
+        throw new HttpException(
+          'Pet with the given details not found.',
+          HttpStatus.NOT_FOUND,
+        );
+      return deletedPet;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
