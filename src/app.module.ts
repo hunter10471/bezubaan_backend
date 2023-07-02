@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PetModule } from './pet/pet.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { VetModule } from './vet/vet.module';
 
 @Module({
   imports: [
@@ -15,11 +15,16 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     UserModule,
     PetModule,
-    MongooseModule.forRoot(process.env.MONGODB_URI, {
-      dbName: 'bezubaan',
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get('MONGODB_URI'),
+        dbName: 'bezubaan',
+      }),
+      inject: [ConfigService],
     }),
+    VetModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

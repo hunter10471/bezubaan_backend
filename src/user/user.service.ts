@@ -1,20 +1,16 @@
-import {
-  CreateUserDto,
-  UpdateUserDto,
-  GetUserDto,
-  DeleteUserDto,
-} from './dto/user.dto';
+import { UpdateUserDto } from './dto/user.dto';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
+import { SignupUserDto } from 'src/auth/dto/auth.dto';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  async createUser(data: CreateUserDto): Promise<User> {
+  async createUser(data: SignupUserDto): Promise<User> {
     try {
       const existingUser = await this.userModel.findOne({
         $or: [{ username: data.username }, { email: data.email }],
@@ -35,15 +31,11 @@ export class UserService {
     }
   }
 
-  async updateUser(data: UpdateUserDto): Promise<User> {
+  async updateUser(id: string, data: UpdateUserDto): Promise<User> {
     try {
-      const existingUser = await this.userModel.findOneAndUpdate(
-        { username: data.username },
-        data,
-        {
-          new: true,
-        },
-      );
+      const existingUser = await this.userModel.findByIdAndUpdate(id, data, {
+        new: true,
+      });
       if (!existingUser)
         throw new HttpException(
           `User with username ${data.username} was not found.`,
@@ -56,12 +48,12 @@ export class UserService {
     }
   }
 
-  async getUser(data: GetUserDto): Promise<User> {
+  async getUser(id: string): Promise<User> {
     try {
-      const user = await this.userModel.findOne({ username: data.username });
+      const user = await this.userModel.findById(id);
       if (!user)
         throw new HttpException(
-          `User with username ${data.username} not found.`,
+          `User with id ${id} not found.`,
           HttpStatus.NOT_FOUND,
         );
       return user;
@@ -84,14 +76,12 @@ export class UserService {
     }
   }
 
-  async deleteUser(data: DeleteUserDto): Promise<User> {
+  async deleteUser(id: string): Promise<User> {
     try {
-      const deletedUser = await this.userModel.findOneAndDelete({
-        username: data.username,
-      });
+      const deletedUser = await this.userModel.findByIdAndRemove(id);
       if (!deletedUser)
         throw new HttpException(
-          `User with username ${data.username}  not found.`,
+          `User with id ${id}  not found.`,
           HttpStatus.NOT_FOUND,
         );
       return deletedUser;

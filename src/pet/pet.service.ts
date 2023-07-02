@@ -1,9 +1,4 @@
-import {
-  CreatePetDto,
-  UpdatePetDto,
-  GetPetDto,
-  DeletePetDto,
-} from './dto/pet.dto';
+import { CreatePetDto, UpdatePetDto } from './dto/pet.dto';
 
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -31,15 +26,11 @@ export class PetService {
     }
   }
 
-  async updatePet(data: UpdatePetDto): Promise<Pet> {
+  async updatePet(id: string, data: UpdatePetDto): Promise<Pet> {
     try {
-      const existingPet = await this.petModel.findOneAndUpdate(
-        { id: data.id },
-        data,
-        {
-          new: true,
-        },
-      );
+      const existingPet = await this.petModel.findByIdAndUpdate(id, data, {
+        new: true,
+      });
       if (!existingPet)
         throw new HttpException(
           `User with id ${data.id} could not be updated.`,
@@ -80,11 +71,9 @@ export class PetService {
     }
   }
 
-  async deletePet(data: DeletePetDto): Promise<Pet> {
+  async deletePet(id: string): Promise<Pet> {
     try {
-      const deletedPet = await this.petModel.findOneAndDelete({
-        id: data.id,
-      });
+      const deletedPet = await this.petModel.findByIdAndDelete(id);
       if (!deletedPet)
         throw new HttpException(
           'Pet with the given details not found.',
