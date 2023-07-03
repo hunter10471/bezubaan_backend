@@ -15,6 +15,7 @@ export class UserService {
       const existingUser = await this.userModel.findOne({
         $or: [{ username: data.username }, { email: data.email }],
       });
+
       if (existingUser) {
         throw new HttpException(
           'User with the following email or username already exists.',
