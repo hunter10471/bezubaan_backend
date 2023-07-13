@@ -7,7 +7,6 @@ import {
   IsOptional,
   IsString,
   IsStrongPassword,
-  MinLength,
 } from 'class-validator';
 import { Gender } from 'src/pet/entities/pet.entity';
 import { ApiProperty } from '@nestjs/swagger';

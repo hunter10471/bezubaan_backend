@@ -5,45 +5,59 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
 import { Gender } from '../entities/pet.entity';
-import { ObjectId } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+
 export class CreatePetDto {
   @IsString()
   @IsNotEmpty()
-  readonly name: string;
+  @ApiProperty()
+  name: string;
 
   @IsNumber()
   @IsNotEmpty()
-  readonly age: number;
+  @ApiProperty()
+  age: number;
 
   @IsEnum(Gender)
   @IsNotEmpty()
-  readonly gender: Gender;
+  @ApiProperty()
+  gender: Gender;
 
   @IsString()
   @IsNotEmpty()
-  readonly image: string;
+  @ApiProperty()
+  image: string;
 
   @IsString()
   @IsOptional()
-  readonly species: string;
+  @ApiProperty()
+  species: string;
 }
 
-export class UpdatePetDto extends PartialType(CreatePetDto) {
+export class UpdatePetDto {
   @IsString()
-  @IsNotEmpty()
-  id: string;
-}
+  @IsOptional()
+  @ApiProperty()
+  name: string;
 
-export class GetPetDto {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-}
+  @IsNumber()
+  @IsOptional()
+  @ApiProperty()
+  age: number;
 
-export class DeletePetDto {
+  @IsEnum(Gender)
+  @IsOptional()
+  @ApiProperty()
+  gender: Gender;
+
   @IsString()
-  @IsNotEmpty()
-  id: string;
+  @IsOptional()
+  @ApiProperty()
+  image: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  species: string;
 }

@@ -7,9 +7,14 @@ export enum Gender {
   FEMALE = 'female',
 }
 
+export enum AnimalType {
+  CAT = 'cat',
+  DOG = 'dog',
+}
+
 @Schema({ timestamps: true })
 export class Pet {
-  @Prop({ type: String, unique: true, required: true })
+  @Prop({ type: String, required: true })
   name: string;
   @Prop({ type: Number, required: true })
   age: number;
@@ -17,10 +22,12 @@ export class Pet {
   gender: Gender;
   @Prop({ type: String, required: true })
   image: string;
+  @Prop({ enum: AnimalType, required: true })
+  animalType: AnimalType;
   @Prop({ type: String })
   species: string;
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  owner: User;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  ownerId: User;
 }
 
 export const PetSchema = SchemaFactory.createForClass(Pet);

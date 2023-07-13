@@ -11,13 +11,13 @@ export class PetService {
 
   async createPet(data: CreatePetDto): Promise<Pet> {
     try {
-      const existingPet = await this.petModel.findOne({ name: data.name });
-      if (existingPet) {
-        throw new HttpException(
-          `Pet with name ${data.name} already exists`,
-          HttpStatus.CONFLICT,
-        );
-      }
+      // const existingPet = await this.petModel.findOne({ name: data.name });
+      // if (existingPet) {
+      //   throw new HttpException(
+      //     `Pet with name ${data.name} already exists`,
+      //     HttpStatus.CONFLICT,
+      //   );
+      // }
       const newPet = new this.petModel(data);
       return await newPet.save();
     } catch (error) {
@@ -33,7 +33,7 @@ export class PetService {
       });
       if (!existingPet)
         throw new HttpException(
-          `User with id ${data.id} could not be updated.`,
+          `User with id ${id} could not be updated.`,
           HttpStatus.NOT_FOUND,
         );
       return existingPet;
@@ -48,7 +48,7 @@ export class PetService {
       const pet = await this.petModel.findById(id);
       if (!pet)
         throw new HttpException(
-          'Pet with the given details not found.',
+          `Pet with the given id ${id} not found.`,
           HttpStatus.NOT_FOUND,
         );
       return pet;
@@ -76,7 +76,7 @@ export class PetService {
       const deletedPet = await this.petModel.findByIdAndDelete(id);
       if (!deletedPet)
         throw new HttpException(
-          'Pet with the given details not found.',
+          `Pet with the given id ${id} not found.`,
           HttpStatus.NOT_FOUND,
         );
       return deletedPet;
