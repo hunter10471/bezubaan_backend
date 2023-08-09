@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { VetModule } from './vet/vet.module';
 import { AwsModule } from './upload/upload.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AwsModule } from './upload/upload.module';
       }),
       inject: [ConfigService],
     }),
+    HealthModule,
   ],
 })
 export class AppModule {}
