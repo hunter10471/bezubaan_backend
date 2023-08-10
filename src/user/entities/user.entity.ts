@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Pet } from 'src/pet/entities/pet.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Appointment } from 'src/appointment/entities/appointment.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -34,6 +35,10 @@ export class User {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Pet' })
   @ApiProperty()
   pets: Pet[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' })
+  @ApiProperty()
+  appointments: Appointment[];
 
   @Prop({ type: Boolean, default: false })
   @ApiProperty()

@@ -33,6 +33,11 @@ export class CreatePetDto {
   @IsOptional()
   @ApiProperty()
   species: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  user: string;
 }
 
 export class UpdatePetDto {

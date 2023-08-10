@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { VetModule } from './vet/vet.module';
 import { AwsModule } from './upload/upload.module';
 import { AppController } from './app.controller';
+import { AppointmentModule } from './appointment/appointment.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AppController } from './app.controller';
       }),
       inject: [ConfigService],
     }),
+    AppointmentModule,
   ],
   controllers: [AppController],
 })
