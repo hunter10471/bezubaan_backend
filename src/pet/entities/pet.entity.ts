@@ -27,7 +27,7 @@ export class Pet {
   @Prop({ type: String })
   species: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  ownerId: User;
+  owner: User;
 }
 
 export const PetSchema = SchemaFactory.createForClass(Pet);

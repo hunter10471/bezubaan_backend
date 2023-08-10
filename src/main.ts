@@ -6,6 +6,7 @@ import { setupSwagger } from 'swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   const configService = new ConfigService();
   const PORT = configService.get('PORT') || 5000;
   const apiPrefix = 'api';
