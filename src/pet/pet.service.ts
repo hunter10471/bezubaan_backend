@@ -11,13 +11,6 @@ export class PetService {
 
   async createPet(data: CreatePetDto): Promise<Pet> {
     try {
-      // const existingPet = await this.petModel.findOne({ name: data.name });
-      // if (existingPet) {
-      //   throw new HttpException(
-      //     `Pet with name ${data.name} already exists`,
-      //     HttpStatus.CONFLICT,
-      //   );
-      // }
       const newPet = new this.petModel(data);
       return await newPet.save();
     } catch (error) {
@@ -45,7 +38,7 @@ export class PetService {
 
   async getPet(id: string): Promise<Pet> {
     try {
-      const pet = await this.petModel.findById(id);
+      const pet = await this.petModel.findById(id).populate('ownerId');
       if (!pet)
         throw new HttpException(
           `Pet with the given id ${id} not found.`,

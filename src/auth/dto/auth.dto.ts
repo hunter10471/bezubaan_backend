@@ -8,9 +8,8 @@ import {
   IsString,
   IsStrongPassword,
 } from 'class-validator';
-import { Gender } from 'src/pet/entities/pet.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { FieldOfStudy, University } from 'src/common/enums';
+import { FieldOfStudy, Gender, University } from 'src/common/enums';
 
 export class SignupUserDto {
   @IsString()

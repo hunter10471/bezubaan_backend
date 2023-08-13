@@ -5,7 +5,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Gender } from '../entities/user.entity';
+import { Gender } from 'src/common/enums';
 
 export class UpdateUserDto {
   @IsString()

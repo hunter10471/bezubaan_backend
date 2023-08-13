@@ -5,9 +5,9 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/user/entities/user.entity';
 import { LoginUserDto, SignUpVetDto, SignupUserDto } from './dto/auth.dto';
-import { UserType } from 'src/common/enums';
 import { Vet } from 'src/vet/entities/vet.entity';
 import { VetService } from 'src/vet/vet.service';
+import { UserType } from 'src/common/enums';
 
 @Injectable()
 export class AuthService {

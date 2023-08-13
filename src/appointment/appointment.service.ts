@@ -1,25 +1,79 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAppointmentDto } from './dto/appointment.dto';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  CreateAppointmentDto,
+  UpdateAppointmentDto,
+} from './dto/appointment.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Appointment } from './entities/appointment.entity';
 
 @Injectable()
 export class AppointmentService {
-  create(createAppointmentDto: CreateAppointmentDto) {
-    return 'This action adds a new appointment';
+  constructor(
+    @InjectModel('Appointment') private appointmentModel: Model<Appointment>,
+  ) {}
+  async create(data: CreateAppointmentDto): Promise<Appointment> {
+    try {
+      const newAppointment = new this.appointmentModel(data);
+      return await newAppointment.save();
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all appointment`;
+  async findAll() {
+    try {
+      const appointments = await this.appointmentModel.find();
+      if (appointments.length === 0) {
+        throw new HttpException('No appointments found.', HttpStatus.NOT_FOUND);
+      }
+      return appointments;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} appointment`;
+  async findOne(id: string) {
+    try {
+      const appointment = await this.appointmentModel.findById(id);
+      if (!appointment) {
+        throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
+      }
+      return appointment;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateAppointmentDto: any) {
-    return `This action updates a #${id} appointment`;
+  async update(id: string, data: UpdateAppointmentDto) {
+    try {
+      const appointment = await this.appointmentModel.findByIdAndUpdate(
+        id,
+        data,
+      );
+      if (!appointment) {
+        throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
+      }
+      return appointment;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} appointment`;
+  async remove(id: string) {
+    try {
+      const appointment = await this.appointmentModel.findByIdAndRemove(id);
+      if (!appointment) {
+        throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
+      }
+      return appointment;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

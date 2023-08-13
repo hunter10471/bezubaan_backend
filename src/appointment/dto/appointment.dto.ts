@@ -1,39 +1,84 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsDate, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+} from 'class-validator';
+import { Type as TypeTransformer } from 'class-transformer';
+import { PaymentStatus, Status, Type } from 'src/common/enums';
 
 export class CreateAppointmentDto {
   @IsDate()
+  @TypeTransformer(() => Date)
   @IsNotEmpty()
   @ApiProperty()
   appointmentDate: Date;
 
-  @IsBoolean()
+  @IsEnum(Status)
   @IsNotEmpty()
   @ApiProperty()
-  status: boolean;
+  status: Status;
 
-  @IsBoolean()
+  @IsEnum(PaymentStatus)
   @IsNotEmpty()
   @ApiProperty()
-  paymentStatus: boolean;
+  paymentStatus: PaymentStatus;
 
-  @IsBoolean()
+  @IsEnum(Type)
   @IsNotEmpty()
   @ApiProperty()
-  type: boolean;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
-  user: string;
+  type: Type;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  pet: string;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  vet: string;
+  petId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  vetId: string;
+}
+export class UpdateAppointmentDto {
+  @IsDate()
+  @IsOptional()
+  @ApiProperty()
+  appointmentDate: Date;
+
+  @IsEnum(Status)
+  @IsNotEmpty()
+  @ApiProperty()
+  status: Status;
+
+  @IsEnum(PaymentStatus)
+  @IsOptional()
+  @ApiProperty()
+  paymentStatus: PaymentStatus;
+
+  @IsEnum(Type)
+  @IsOptional()
+  @ApiProperty()
+  type: Type;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  userId: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  petId: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  vetId: string;
 }

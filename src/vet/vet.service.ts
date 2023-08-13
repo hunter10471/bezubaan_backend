@@ -77,4 +77,22 @@ export class VetService {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async findVetsByQuery(partialQuery: string): Promise<Vet[]> {
+    try {
+      const query = new RegExp(partialQuery, 'i');
+      const vets = await this.vetModel.find({
+        $or: [
+          { username: query },
+          { clinicName: query },
+          { fieldOfStudy: query },
+          { specializations: query },
+        ],
+      });
+      return vets;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

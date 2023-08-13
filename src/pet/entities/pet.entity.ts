@@ -1,16 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
+import { AnimalType, Gender } from 'src/common/enums';
 import { User } from 'src/user/entities/user.entity';
-
-export enum Gender {
-  MALE = 'male',
-  FEMALE = 'female',
-}
-
-export enum AnimalType {
-  CAT = 'cat',
-  DOG = 'dog',
-}
 
 @Schema({ timestamps: true })
 export class Pet {
@@ -22,12 +13,12 @@ export class Pet {
   gender: Gender;
   @Prop({ type: String, required: true })
   image: string;
-  @Prop({ enum: AnimalType, required: true })
+  @Prop({ type: String, enum: AnimalType, required: true })
   animalType: AnimalType;
   @Prop({ type: String })
   species: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  owner: User;
+  ownerId: User;
 }
 
 export const PetSchema = SchemaFactory.createForClass(Pet);

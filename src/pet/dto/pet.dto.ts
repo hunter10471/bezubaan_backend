@@ -5,8 +5,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Gender } from '../entities/pet.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Gender } from 'src/common/enums';
 
 export class CreatePetDto {
   @IsString()
@@ -37,7 +37,7 @@ export class CreatePetDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  user: string;
+  ownerId: string;
 }
 
 export class UpdatePetDto {

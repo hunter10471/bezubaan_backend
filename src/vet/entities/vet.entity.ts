@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { FieldOfStudy, University } from 'src/common/enums';
-import { Gender } from 'src/user/entities/user.entity';
+import { FieldOfStudy, Gender, University } from 'src/common/enums';
 import { ApiProperty } from '@nestjs/swagger';
 @Schema({ timestamps: true })
 export class Vet {
@@ -8,11 +7,11 @@ export class Vet {
   @ApiProperty()
   username: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, unique: true, required: true })
   @ApiProperty()
   email: string;
 
-  @Prop({ type: String, required: true, minlength: 8 })
+  @Prop({ type: String, minlength: 8, required: true })
   @ApiProperty()
   password: string;
 
@@ -24,7 +23,7 @@ export class Vet {
   @ApiProperty()
   avatar: string;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number })
   @ApiProperty()
   yearsOfExperience: number;
 
@@ -32,25 +31,37 @@ export class Vet {
   @ApiProperty()
   specializations: string[];
 
-  @Prop({ enum: FieldOfStudy, required: true })
+  @Prop({ enum: FieldOfStudy })
   @ApiProperty({ enum: FieldOfStudy })
   fieldOfStudy: FieldOfStudy;
 
-  @Prop({ enum: University, required: true })
+  @Prop({ enum: University })
   @ApiProperty({ enum: University })
   university: University;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   @ApiProperty()
   degreeImage: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String })
   @ApiProperty()
   licenseImage: string;
 
   @Prop({ type: Boolean, default: false })
   @ApiProperty()
   isApproved: boolean;
+
+  @Prop({ type: String })
+  @ApiProperty()
+  clinicName: string;
+
+  @Prop({ type: String })
+  @ApiProperty()
+  address: string;
+
+  @Prop({ type: String })
+  @ApiProperty()
+  licenseNumber: string;
 }
 
 export const VetSchema = SchemaFactory.createForClass(Vet);

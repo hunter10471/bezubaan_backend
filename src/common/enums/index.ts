@@ -47,6 +47,27 @@ export enum University {
   Other = 'Other',
 }
 
+export enum AnimalType {
+  CAT = 'cat',
+  DOG = 'dog',
+}
+
+export enum Status {
+  PENDING = 'pending',
+  CANCELLED = 'cancelled',
+  DONE = 'done',
+}
+
+export enum PaymentStatus {
+  PAID = 'paid',
+  UNPAID = 'unpaid',
+}
+
+export enum Type {
+  VIRTUAL = 'virtual',
+  PHYSICAL = 'physical',
+}
+
 export enum UserType {
   VET = 'vet',
   USER = 'user',

@@ -2,36 +2,49 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from 'aws-sdk/clients/budgets';
 import mongoose from 'mongoose';
+import { PaymentStatus, Status, Type } from 'src/common/enums';
 import { Pet } from 'src/pet/entities/pet.entity';
 import { Vet } from 'src/vet/entities/vet.entity';
 
 @Schema({ timestamps: true })
 export class Appointment {
-  @Prop({ type: Date })
+  @Prop({ type: Date, required: true })
   @ApiProperty()
   appointmentDate: Date;
 
-  @Prop({ type: Boolean })
+  @Prop({ type: String, enum: Status, default: Status.PENDING })
   @ApiProperty()
-  status: boolean;
+  status: Status;
 
-  @Prop({ type: Boolean })
+  @Prop({ type: String, enum: PaymentStatus, default: PaymentStatus.UNPAID })
   @ApiProperty()
-  paymentStatus: boolean;
+  paymentStatus: PaymentStatus;
 
-  @Prop({ type: Boolean })
+  @Prop({ type: String, enum: Type, required: true })
   @ApiProperty()
-  type: boolean;
+  type: Type;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Vet' })
+  @Prop({ type: Number, required: true })
   @ApiProperty()
-  vet: Vet;
+  amount: number;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Pet' })
+  @Prop({ type: Number })
   @ApiProperty()
-  pet: Pet;
+  rating: number;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ type: String })
   @ApiProperty()
-  user: User;
+  review: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Vet', required: true })
+  @ApiProperty()
+  vetId: Vet;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Pet', required: true })
+  @ApiProperty()
+  petId: Pet;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  @ApiProperty()
+  userId: User;
 }

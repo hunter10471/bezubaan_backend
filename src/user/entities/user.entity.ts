@@ -3,12 +3,7 @@ import mongoose from 'mongoose';
 import { Pet } from 'src/pet/entities/pet.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Appointment } from 'src/appointment/entities/appointment.entity';
-
-export enum Gender {
-  MALE = 'male',
-  FEMALE = 'female',
-  OTHER = 'other',
-}
+import { Gender } from 'src/common/enums';
 
 @Schema({ timestamps: true })
 export class User {
@@ -16,7 +11,7 @@ export class User {
   @ApiProperty()
   username: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true })
   @ApiProperty()
   email: string;
 
@@ -32,11 +27,11 @@ export class User {
   @ApiProperty()
   avatar: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Pet' })
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Pet' })
   @ApiProperty()
   pets: Pet[];
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' })
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Appointment' })
   @ApiProperty()
   appointments: Appointment[];
 
