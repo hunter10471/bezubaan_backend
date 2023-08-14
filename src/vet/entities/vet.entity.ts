@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { FieldOfStudy, Gender, University } from 'src/common/enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { LocationSchema, Location } from 'src/common/entities/location.entity';
+
 @Schema({ timestamps: true })
 export class Vet {
   @Prop({ type: String, unique: true, required: true })
@@ -62,6 +64,14 @@ export class Vet {
   @Prop({ type: String })
   @ApiProperty()
   licenseNumber: string;
+
+  @Prop({ type: LocationSchema })
+  @ApiProperty()
+  location: Location;
+
+  @Prop({ type: String })
+  @ApiProperty()
+  description: string;
 }
 
 export const VetSchema = SchemaFactory.createForClass(Vet);

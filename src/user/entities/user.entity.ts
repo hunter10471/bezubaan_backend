@@ -4,7 +4,7 @@ import { Pet } from 'src/pet/entities/pet.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Appointment } from 'src/appointment/entities/appointment.entity';
 import { Gender } from 'src/common/enums';
-
+import { LocationSchema, Location } from 'src/common/entities/location.entity';
 @Schema({ timestamps: true })
 export class User {
   @Prop({ type: String, unique: true, required: true })
@@ -38,6 +38,10 @@ export class User {
   @Prop({ type: Boolean, default: false })
   @ApiProperty()
   isAdmin: boolean;
+
+  @Prop({ type: LocationSchema })
+  @ApiProperty()
+  location: Location;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -12,6 +12,7 @@ export class UserService {
 
   async createUser(data: SignupUserDto): Promise<User> {
     try {
+      data.email = data.email.toLowerCase();
       const existingUser = await this.userModel.findOne({
         email: data.email,
       });
@@ -34,6 +35,9 @@ export class UserService {
 
   async updateUser(id: string, data: UpdateUserDto): Promise<User> {
     try {
+      if (data.email) {
+        data.email = data.email.toLowerCase();
+      }
       const existingUser = await this.userModel.findByIdAndUpdate(id, data, {
         new: true,
       });

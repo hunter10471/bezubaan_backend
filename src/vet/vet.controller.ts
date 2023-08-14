@@ -26,8 +26,8 @@ export class VetController {
   @ApiResponse({ status: 404, description: 'Vets not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   @Get('get-all-vets')
-  findAll(): Promise<Vet[]> {
-    return this.vetService.findAll();
+  findAll(@Query('approved') approved: string): Promise<Vet[]> {
+    return this.vetService.findAll(approved);
   }
 
   @ApiOperation({ summary: 'Get vet by id' })
@@ -79,5 +79,20 @@ export class VetController {
   @Get('get-vets-by-query')
   findVetsByQuery(@Query('query') query: string): Promise<Vet[]> {
     return this.vetService.findVetsByQuery(query);
+  }
+
+  @ApiOperation({ summary: 'Get vets by distance' })
+  @ApiResponse({
+    status: 200,
+    description: 'Vets found',
+  })
+  @ApiResponse({ status: 404, description: 'Vets not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @Get('get-vets-by-distance/:lat/:long')
+  findClosestVets(
+    @Param('lat') lat: string,
+    @Param('long') long: string,
+  ): Promise<Vet[]> {
+    return this.vetService.findClosestVets({ lat, long });
   }
 }

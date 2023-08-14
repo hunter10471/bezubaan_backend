@@ -3,14 +3,16 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNotEmptyObject,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   IsStrongPassword,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { FieldOfStudy, Gender, University } from 'src/common/enums';
-
+import { Location } from 'src/common/entities/location.entity';
 export class SignupUserDto {
   @IsString()
   @IsNotEmpty()

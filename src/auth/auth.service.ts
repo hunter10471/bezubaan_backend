@@ -34,6 +34,7 @@ export class AuthService {
 
   async login(data: LoginUserDto, userType: UserType) {
     try {
+      data.email = data.email.toLowerCase();
       const user =
         userType === UserType.USER
           ? await this.userModel.findOne({ email: data.email }).lean()
