@@ -6,6 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Appointment } from './entities/appointment.entity';
+import { Status } from 'src/common/enums';
 
 @Injectable()
 export class AppointmentService {
@@ -71,6 +72,20 @@ export class AppointmentService {
         throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
       }
       return appointment;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async getVetsAppointments(active: string, vetId: string) {
+    try {
+      const status = active === 'true' ? Status.PENDING : true;
+      const appointments = await this.appointmentModel.find({
+        vetId: vetId,
+        status: status,
+      });
+      return appointments;
     } catch (error) {
       Logger.error(error);
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);

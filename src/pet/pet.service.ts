@@ -78,4 +78,17 @@ export class PetService {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async getUsersPets(userId: string) {
+    try {
+      const pets = await this.petModel.find({ ownerId: userId });
+      if (pets.length === 0) {
+        throw new HttpException('No pets found', HttpStatus.NOT_FOUND);
+      }
+      return pets;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

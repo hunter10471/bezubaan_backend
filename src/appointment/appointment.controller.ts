@@ -5,6 +5,7 @@ import {
   Body,
   Param,
   Delete,
+  Query,
   Put,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
@@ -81,6 +82,22 @@ export class AppointmentController {
   @Delete('delete-appointment-by-id/:id')
   remove(@Param('id') id: string) {
     return this.appointmentService.remove(id);
+  }
+
+  @ApiOperation({ summary: 'Get appointments by vet id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Appointments found',
+    type: [Appointment],
+  })
+  @ApiResponse({ status: 404, description: 'Appointments not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @Delete('get-appointment-by-vet-id/:id')
+  findVetAppointments(
+    @Param('id') id: string,
+    @Query('active') active: string,
+  ) {
+    return this.appointmentService.getVetsAppointments(active, id);
   }
 }
 

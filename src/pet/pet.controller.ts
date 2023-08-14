@@ -82,4 +82,17 @@ export class PetController {
   async createPet(@Body() data: CreatePetDto) {
     return await this.petService.createPet(data);
   }
+
+  @ApiOperation({ summary: 'Get users pets' })
+  @ApiResponse({
+    status: 200,
+    description: 'Pets found',
+    type: [Pet],
+  })
+  @ApiResponse({ status: 409, description: 'Pet already exists' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @Get('get-pet-by-userId/:id')
+  async getUserPets(@Param('id') id: string) {
+    return await this.petService.getUsersPets(id);
+  }
 }

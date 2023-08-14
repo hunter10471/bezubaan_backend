@@ -72,6 +72,18 @@ export class Vet {
   @Prop({ type: String })
   @ApiProperty()
   description: string;
+
+  @Prop({ type: String })
+  @ApiProperty()
+  fromTime: string;
+
+  @Prop({ type: String })
+  @ApiProperty()
+  toTime: string;
+
+  @Prop({ type: Number })
+  @ApiProperty()
+  fee: number;
 }
 
 export const VetSchema = SchemaFactory.createForClass(Vet);
