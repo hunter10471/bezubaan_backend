@@ -91,4 +91,18 @@ export class AppointmentService {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async getUsersAppointments(active: string, userId: string) {
+    try {
+      const status = active === 'true' ? Status.PENDING : true;
+      const appointments = await this.appointmentModel.find({
+        userId: userId,
+        status: status,
+      });
+      return appointments;
+    } catch (error) {
+      Logger.error(error);
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

@@ -99,6 +99,22 @@ export class AppointmentController {
   ) {
     return this.appointmentService.getVetsAppointments(active, id);
   }
+
+  @ApiOperation({ summary: 'Get appointments by user id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Appointments found',
+    type: [Appointment],
+  })
+  @ApiResponse({ status: 404, description: 'Appointments not found' })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
+  @Delete('get-appointment-by-vet-id/:id')
+  findUserAppointments(
+    @Param('id') id: string,
+    @Query('active') active: string,
+  ) {
+    return this.appointmentService.getUsersAppointments(active, id);
+  }
 }
 
 export const AppointmentSchema = SchemaFactory.createForClass(Appointment);
