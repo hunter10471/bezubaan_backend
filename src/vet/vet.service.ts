@@ -66,11 +66,9 @@ export class VetService {
 
   async update(id: number, data: UpdateVetDto): Promise<Vet> {
     try {
-      await this.findOne(id);
       if (data.email) {
         data.email = data.email.toLowerCase();
       }
-
       return await this.vetModel.findByIdAndUpdate(id, data);
     } catch (error) {
       Logger.error(error);

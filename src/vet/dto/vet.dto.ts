@@ -71,4 +71,24 @@ export class UpdateVetDto {
   @IsOptional()
   @ApiProperty()
   isApproved: boolean;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  description: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  fromTime: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  toTime: string;
+
+  @IsNumber()
+  @IsOptional()
+  @ApiProperty()
+  fee: number;
 }
