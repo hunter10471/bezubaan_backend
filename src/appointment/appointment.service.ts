@@ -83,14 +83,18 @@ export class AppointmentService {
       const status = active === 'true' ? Status.PENDING : true;
       let appointments;
       if (status === Status.PENDING) {
-        appointments = await this.appointmentModel.find({
-          vetId: vetId,
-          status: status,
-        });
+        appointments = await this.appointmentModel
+          .find({
+            vetId: vetId,
+            status: status,
+          })
+          .sort({ appointmentDate: -1 });
       } else {
-        appointments = await this.appointmentModel.find({
-          vetId: vetId,
-        });
+        appointments = await this.appointmentModel
+          .find({
+            vetId: vetId,
+          })
+          .sort({ appointmentDate: -1 });
       }
       return appointments;
     } catch (error) {
@@ -104,14 +108,18 @@ export class AppointmentService {
       const status = active === 'true' ? Status.PENDING : true;
       let appointments;
       if (status === Status.PENDING) {
-        appointments = await this.appointmentModel.find({
-          userId: userId,
-          status: status,
-        });
+        appointments = await this.appointmentModel
+          .find({
+            userId: userId,
+            status: status,
+          })
+          .sort({ appointmentDate: -1 });
       } else {
-        appointments = await this.appointmentModel.find({
-          userId: userId,
-        });
+        appointments = await this.appointmentModel
+          .find({
+            userId: userId,
+          })
+          .sort({ appointmentDate: -1 });
       }
       return appointments;
     } catch (error) {
