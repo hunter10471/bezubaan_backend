@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { VetService } from './vet.service';
 import { UpdateVetDto } from './dto/vet.dto';
-import { SignUpVetDto } from 'src/auth/dto/auth.dto';
 import { Vet } from './entities/vet.entity';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Vets')
@@ -39,7 +38,7 @@ export class VetController {
   @ApiResponse({ status: 500, description: 'Internal server error' })
   @Get('get-vet-by-id/:id')
   findOne(@Param('id') id: string) {
-    return this.vetService.findOne(+id);
+    return this.vetService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update vet by id' })
@@ -66,7 +65,7 @@ export class VetController {
   @ApiResponse({ status: 500, description: 'Internal server error' })
   @Delete('delete-vet-by-id/:id')
   remove(@Param('id') id: string): Promise<Vet> {
-    return this.vetService.remove(+id);
+    return this.vetService.remove(id);
   }
 
   @ApiOperation({ summary: 'Get vets by query' })

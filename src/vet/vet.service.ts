@@ -48,7 +48,7 @@ export class VetService {
     }
   }
 
-  async findOne(id: number): Promise<Vet> {
+  async findOne(id: string): Promise<Vet> {
     try {
       const vet = await this.vetModel.findById(id);
       if (!vet) {
@@ -76,7 +76,7 @@ export class VetService {
     }
   }
 
-  async remove(id: number): Promise<Vet> {
+  async remove(id: string): Promise<Vet> {
     try {
       await this.findOne(id);
       return await this.vetModel.findByIdAndDelete(id);
