@@ -108,7 +108,7 @@ export class AppointmentController {
   })
   @ApiResponse({ status: 404, description: 'Appointments not found' })
   @ApiResponse({ status: 500, description: 'Internal server error' })
-  @Delete('get-appointment-by-vet-id/:id')
+  @Delete('get-appointment-by-user-id/:id')
   findUserAppointments(
     @Param('id') id: string,
     @Query('active') active: string,
