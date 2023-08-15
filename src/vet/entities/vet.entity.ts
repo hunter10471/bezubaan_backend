@@ -73,14 +73,6 @@ export class Vet {
   @ApiProperty()
   description: string;
 
-  @Prop({ type: String })
-  @ApiProperty()
-  fromTime: string;
-
-  @Prop({ type: String })
-  @ApiProperty()
-  toTime: string;
-
   @Prop({ type: Number })
   @ApiProperty()
   fee: number;

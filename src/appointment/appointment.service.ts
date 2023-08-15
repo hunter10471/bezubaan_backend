@@ -81,10 +81,17 @@ export class AppointmentService {
   async getVetsAppointments(active: string, vetId: string) {
     try {
       const status = active === 'true' ? Status.PENDING : true;
-      const appointments = await this.appointmentModel.find({
-        vetId: vetId,
-        status: status,
-      });
+      let appointments;
+      if (status === Status.PENDING) {
+        appointments = await this.appointmentModel.find({
+          vetId: vetId,
+          status: status,
+        });
+      } else {
+        appointments = await this.appointmentModel.find({
+          vetId: vetId,
+        });
+      }
       return appointments;
     } catch (error) {
       Logger.error(error);
@@ -95,10 +102,17 @@ export class AppointmentService {
   async getUsersAppointments(active: string, userId: string) {
     try {
       const status = active === 'true' ? Status.PENDING : true;
-      const appointments = await this.appointmentModel.find({
-        userId: userId,
-        status: status,
-      });
+      let appointments;
+      if (status === Status.PENDING) {
+        appointments = await this.appointmentModel.find({
+          userId: userId,
+          status: status,
+        });
+      } else {
+        appointments = await this.appointmentModel.find({
+          userId: userId,
+        });
+      }
       return appointments;
     } catch (error) {
       Logger.error(error);
