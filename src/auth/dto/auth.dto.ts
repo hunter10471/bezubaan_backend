@@ -67,7 +67,6 @@ export class SignUpVetDto {
   avatar: string;
 
   @IsNumber()
-  @IsNotEmpty()
   @ApiProperty()
   yearsOfExperience: number;
 
@@ -76,23 +75,19 @@ export class SignUpVetDto {
   @ApiProperty()
   specializations: string[];
 
-  @IsEnum(FieldOfStudy)
-  @IsNotEmpty()
-  @ApiProperty({ enum: FieldOfStudy })
-  fieldOfStudy: FieldOfStudy;
+  @IsString()
+  @ApiProperty()
+  fieldOfStudy: string;
 
   @IsEnum(University)
-  @IsNotEmpty()
   @ApiProperty({ enum: University })
   university: University;
 
   @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   degreeImage: string;
 
   @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   licenseImage: string;
 }
