@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { FieldOfStudy, Gender, University } from 'src/common/enums';
+import { Gender, University } from 'src/common/enums';
 import { ApiProperty } from '@nestjs/swagger';
 import { LocationSchema, Location } from 'src/common/entities/location.entity';
 
@@ -33,9 +33,9 @@ export class Vet {
   @ApiProperty()
   specializations: string[];
 
-  @Prop({ enum: FieldOfStudy })
-  @ApiProperty({ enum: FieldOfStudy })
-  fieldOfStudy: FieldOfStudy;
+  @Prop()
+  @ApiProperty()
+  fieldOfStudy: string;
 
   @Prop({ enum: University })
   @ApiProperty({ enum: University })

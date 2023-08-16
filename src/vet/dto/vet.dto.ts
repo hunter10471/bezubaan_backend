@@ -9,7 +9,7 @@ import {
   IsString,
   IsStrongPassword,
 } from 'class-validator';
-import { FieldOfStudy, Gender, University } from 'src/common/enums';
+import { Gender, University } from 'src/common/enums';
 
 export class UpdateVetDto {
   @IsOptional()
@@ -47,10 +47,10 @@ export class UpdateVetDto {
   @ApiProperty()
   specializations: string[];
 
-  @IsEnum(FieldOfStudy)
+  @IsString()
   @IsOptional()
-  @ApiProperty({ enum: FieldOfStudy })
-  fieldOfStudy: FieldOfStudy;
+  @ApiProperty()
+  fieldOfStudy: string;
 
   @IsEnum(University)
   @IsOptional()
